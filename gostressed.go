@@ -35,7 +35,7 @@ func RunGoRoutine(a Notifier) {
 
 func HTTPGetCall() string {
 	fmt.Println("Making GET HTTP calls")
-	resp, err := http.Get("http://www.theverge.com/")
+	resp, err := http.Get("https://www.google.com/")
 	if err != nil {
 		fmt.Println("Error loading site:")
 		return ""	// handle error
@@ -84,7 +84,7 @@ func SortFixedList() bool {
 func GenerateAndSort() bool {
 	resp := make([]int, 1000000)
 	for i := range resp {
-		resp[i] = rand.Intn(1000)
+		resp[i] = rand.Intn(10000)
 	}
 
 	qsort(resp)
@@ -178,13 +178,14 @@ func ReadFromFile(pathToFile string) string {
 
 func HashFile(pathToFile string) string {
 	hasher := sha256.New()
-	f, err := os.Open(pathToFile)
+	dat, err := ioutil.ReadFile(pathToFile)
 	if err != nil {
 		fmt.Println("Error reading file at:",pathToFile)
 		return ""
 	}
-	defer f.Close()
-	if _, err := io.Copy(hasher, f); err != nil {
+
+	r := bytes.NewBuffer(dat)
+	if _, err := io.Copy(hasher, r); err != nil {
 	    fmt.Println("Error hashing file:",err)
 	}
 
